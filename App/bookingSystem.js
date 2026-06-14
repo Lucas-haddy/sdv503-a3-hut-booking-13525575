@@ -30,3 +30,27 @@ const checkCapacity = (hutId, startDate, nights, partySize, hutsList, bookingsLi
     }
     return true;
 };
+
+const calculateCost = (partySize, nights, baseRate, isMember) => {
+    const subtotal = partySize * nights * baseRate;
+    let discount = 0;
+    if (isMember === true){
+        discount = subtotal * 0.15;
+    }
+    const net = subtotal - discount;
+    const gst = net * 0.15;
+    const total = net + gst; 
+
+    return {
+        subtotal: Number(subtotal.toFixed(2)),
+        discount: Number(discount.toFixed(2)),
+        net: Number(net.toFixed(2)),
+        gst: Number(gst.toFixed(2)),
+        total: Number(total.toFixed(2))
+    };
+};
+
+module.exports = {
+    checkCapacity,
+    calculateCost
+};
