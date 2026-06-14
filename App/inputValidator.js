@@ -35,7 +35,7 @@ const validateNights = (nights) => {
 }
 
 const validateStartDate = (startDate) => {
-    if (!startDate.length !== 10) {
+    if (typeof startDate !== 'string' || startDate.length !== 10) {
         console.log('Start date must be exactly 10 characters in the format YYYY-MM-DD.');
         return false;
     }
