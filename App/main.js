@@ -167,5 +167,18 @@ async function executeCancellationFlow() {
     } else {
         console.log('Cancellation aborted.');
     }
+}
 
+async function executeSummaryFlow() {
+    console.log('\n=== Occupancy Summary ===');
+
+    if (huts.length === 0) {
+        console.log('No huts registered in the system.');
+        return;
+    }
+    huts.forEach(hut => {
+        const count = bookings.filter(b => b.hutId === hut.hutId).length;
+        console.log(`Hut: ${hut.name.padEnd(15)} | Total Logged Bookings: ${count}`);
+    });
+    console.log('================================================');
 }
