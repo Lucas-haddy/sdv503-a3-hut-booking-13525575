@@ -90,3 +90,51 @@ async function executeBookingFlow() {
     }
     console.log(`\nProgress Saved. Booking for ${name} at ${hutId}...`);
 }
+
+async function executeViewFlow() {
+    console.log('\n=== View Bookings by Date ===');
+
+    let hutId = await askQuestion('Enter Hut ID to view (e.g. H-01: ');
+    hutId = hutId.trim();
+    const bookingHut = huts.find(h => h.hutId === hutId);
+    if (!bookingHut) {
+        console.log('That Hut ID does not exist.');
+        return;
+    }
+    const viewDate = await askQuestion('Enter Date to check (YYYY-MM-DD): ');
+    if (!validator.validateStartDate(viewDate)) {
+        return;
+    }
+    
+    console.log(`\nBookings for ${bookingHut.hutName} on ${viewDate}:`);
+    console.log('================================================');
+
+    let bookedBunks = 0;
+    let foundAny = false;
+
+    for (let b of bookings) {
+        if (b.hutId === hutId) {
+            let bStart = new Date(b.startDate);
+            let bEnd = new Date(b.startDate);
+            bEnd.setDate(bEnd.getDate() + b.nights);
+            let target = new Date(viewDate);
+
+            bStart.setHours(0, 0, 0, 0);
+            bEnd.setHours(0, 0, 0, 0);
+            target.setHours(0, 0, 0, 0);
+            if (target >= bStart && target < bEnd) {
+                console.log(`- ID: ${b.bookingId} | Hiker: ${b.hikerName} | Group Size: ${b.partySize}`);
+                bookedBunks += b.partySize; 
+                foundAny = true;
+        }
+        }
+    }
+    if (!foundAny) {
+        console.log('No bookings found for the selected date.');
+    }
+
+    console.log('================================================');
+    console.log(`Total Bunk Capacity: ${bookingHut.bunkCap}`);
+    console.log(`Booked Bunks: ${bookedBunks}`);
+    console.log(`Free Bunks: ${bookingHut.bunkCap - bookedBunks}`);
+}
