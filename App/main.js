@@ -126,7 +126,7 @@ async function executeViewFlow() {
                 console.log(`- ID: ${b.bookingId} | Hiker: ${b.hikerName} | Group Size: ${b.partySize}`);
                 bookedBunks += b.partySize; 
                 foundAny = true;
-        }
+            }
         }
     }
     if (!foundAny) {
@@ -137,4 +137,35 @@ async function executeViewFlow() {
     console.log(`Total Bunk Capacity: ${bookingHut.bunkCap}`);
     console.log(`Booked Bunks: ${bookedBunks}`);
     console.log(`Free Bunks: ${bookingHut.bunkCap - bookedBunks}`);
+}
+
+async function executeCancellationFlow() {
+    console.log('\n=== Cancel a Booking ===');
+
+    const searchId = await askQuestion('Enter Booking ID: ');
+    const trimmedId = searchId.trim().toUpperCase();
+
+    const index = bookings.findIndex(b => b.bookingId === trimmedId);
+    if (index === -1) {
+        console.log('That Booking ID does not exist.');
+        return;
+    }
+    
+    const targetBooking = bookings[index];
+    console.log(`\nBooking Found: ${targetBooking.hikerName} - ${targetBooking.partySize} people.`);
+    const confirm = await askQuestion(`Are you sure you want to cancel booking ${trimmedId}? (yes/no): `);
+
+    if (confirm.trim().toLowerCase() === 'yes' || confirm.trim().toLowerCase() === 'y') {
+        bookings.splice(index, 1);
+        try {
+            const fs = require('fs');
+            fs.writeFileSync('bookings.json', JSON.stringify(bookings, null, 2)); 
+            console.log(`\nSuccess: Booking ${trimmedId} has been cancelled. Capacity freed.`);
+        } catch (error) {
+            console.log('File Error: Changes could not be saved.');
+        } 
+    } else {
+        console.log('Cancellation aborted.');
+    }
+
 }
