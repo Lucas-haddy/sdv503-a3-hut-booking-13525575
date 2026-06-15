@@ -141,6 +141,44 @@ async function executeBookingFlow() {
         console.log('Booking cancelled due to lack of bunk room.');
         return;
     }
+
+    const pricing = bookingSystem.calculateCost(partySize, nights, targetHut.baseRate, isMember);
+    console.log('\n=========================')
+    console.log('     Billing Invoice     ');
+    console.log('=========================')
+    console.log(`Subtotal: $${pricing.subtotal.toFixed(2)}`);
+    console.log(`Discount: -$${pricing.discount.toFixed(2)} (15% Member Discount)`);
+    console.log(`Net Total: $${pricing.net.toFixed(2)}`);
+    console.log(`NZ GST: $${pricing.gst.toFixed(2)} (15%)`);
+    console.log(`Gross total: $${pricing.total.toFixed(2)}`);
+    console.log('=========================');
+
+    const confirm = await askQuestion('Confirm and finalize this booking record? (yes/no): ');
+    if (confirm.trim().toLowerCase() !== 'yes' && confirm.trim().toLowerCase() !== "y") {
+        console.log('Booking cancelled by user.');
+        return;
+    };
+
+    const newBookingId = 'B-' + (bookings.length + 1001);
+    const newBookingRecord = {
+        bookingId: newBookingId,
+        hutId: hutId,
+        hikerName: name,
+        startDate: startDate,
+        nights: nights,
+        partySize: partySize,
+        isMember: isMember,
+        cost: pricing
+    };
+    bookings.push(newBookingRecord);
+
+    try {
+        const fs = require('fs');
+        fs.writeFileSync('bookings.json', JSON.stringify(bookings, null, 2));
+        console.log(`\nBooking saved successfully! Booking reference code: ${newBookingId}`);
+    } catch (err) {
+        console.log('Error: Booking not saved!');
+    }
 }
 
 async function executeViewFlow() {
