@@ -3,7 +3,6 @@ const readline = require('readline')
 const validator = require('./inputValidator');
 const { loadData } = require('./dataStorage');
 const bookingSystem = require('./bookingSystem');
-const { exec } = require('child_process');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -20,7 +19,7 @@ let bookings = [];
 async function startApp() {
     console.log("System starting...");
     
-    const loadedData = dataStorage.loadData();
+    const loadedData = loadData();
     huts = loadedData.huts;
     bookings = loadedData.bookings;
 
@@ -106,7 +105,7 @@ async function executeViewFlow() {
         return;
     }
     
-    console.log(`\nBookings for ${bookingHut.hutName} on ${viewDate}:`);
+    console.log(`\nBookings for ${bookingHut.name} on ${viewDate}:`);
     console.log('================================================');
 
     let bookedBunks = 0;
@@ -182,3 +181,4 @@ async function executeSummaryFlow() {
     });
     console.log('================================================');
 }
+startApp();
