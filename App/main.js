@@ -71,23 +71,76 @@ async function executeBookingFlow() {
     while (true) {
         name = await askQuestion('Enter Hiker Name: ');
         if (validator.validateHikerName(name)) {
+            name = name.trim();
             break;
         }
     }
+
     let hutId = '';
+    let targetHut = null;
     while (true) {
-        hutId = await askQuestion('Enter Hut ID (e.g., H-01: ');
+        hutId = await askQuestion('Enter Hut ID (e.g., H-01): ');
         if (validator.validateHutId(hutId)) {
-            const hutExists = huts.some(h => h.hutId === hutId.trim());
-            if (hutExists) {
-                hutId = hutId.trim();
+            hutId = hutId.trim();
+            targetHut = huts.find(h => h.hutId === hutId);
+            if (targetHut) {
                 break;
             } else {
                 console.log('Hut ID does not exist.');
             }
         }
     }
-    console.log(`\nProgress Saved. Booking for ${name} at ${hutId}...`);
+    
+    let startDate = '';
+    while (true) {
+        startDate = await askQuestion('Enter Start Date (YYYY-MM-DD): ');
+        if (validator.validateStartDate(startDate)) {
+            startDate = startDate.trim();
+            break;
+        }
+    }
+
+    let nights = 0;
+    while (true) {
+        const nightsInput = await askQuestion('Enter Number of Nights (1-30): ');
+        const parsedNights = parseInt(nightsInput, 10);
+        if (validator.validateNights(parsedNights)) {
+            nights = parsedNights;
+            break;
+        }
+    }
+
+    let partySize = 0;
+    while (true) {
+        const partyInput = await askQuestion('Enter Party Size (1-20): ');
+        const parsedSize = parseInt(partyInput, 10);
+        if (validator.validatePartySize(parsedSize)) {
+            partySize = parsedSize;
+            break;
+        }
+    }
+
+    let isMember = false;
+    while (true) {
+        const memberInput = await askQuestion('Is the hiker a DOC member? (yes/no): ');
+        const formattedInput = memberInput.trim().toLowerCase();
+        if (formattedInput === 'yes' || formattedInput === 'y') {
+            isMember = true;
+            break;
+        } else if (formattedInput === 'no' || formattedInput === 'n') {
+            isMember = false;
+            break;
+        } else {
+            console.log('Invalid Choice: Please Input Yes or No.')
+        }
+    }
+
+    console.log('\nChecking Bunk availablity across dates...');
+    const hasRoom = bookingSystem.checkCapacity(hutId, startDate, nights, partySize, huts, bookings);
+    if (!hasRoom) {
+        console.log('Booking cancelled due to lack of bunk room.');
+        return;
+    }
 }
 
 async function executeViewFlow() {
