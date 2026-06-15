@@ -1,0 +1,18 @@
+[
+  {
+    "bookingId": "B-1001",
+    "hutId": "H-01",
+    "hikerName": "Jane Shepard",
+    "startDate": "2026-08-21",
+    "nights": 30,
+    "partySize": 20,
+    "isMember": true,
+    "cost": {
+      "subtotal": 30000,
+      "discount": 4500,
+      "net": 25500,
+      "gst": 3825,
+      "total": 29325
+    }
+  }
+]

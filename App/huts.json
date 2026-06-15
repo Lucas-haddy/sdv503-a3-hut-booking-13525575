@@ -1,0 +1,16 @@
+[
+  {
+    "hutId": "H-01",
+    "name": "Mintaro Hut",
+    "track": "Milford Track",
+    "bunkCap": 40,
+    "baseRate": 50
+  },
+  {
+    "hutId": "H-02",
+    "name": "Dumpling Hut",
+    "track": "Milford Track",
+    "bunkCap": 30,
+    "baseRate": 50
+  }
+]
