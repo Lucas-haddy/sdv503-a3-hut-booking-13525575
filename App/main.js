@@ -184,7 +184,7 @@ async function executeBookingFlow() {
 async function executeViewFlow() {
     console.log('\n=== View Bookings by Date ===');
 
-    let hutId = await askQuestion('Enter Hut ID to view (e.g. H-01: ');
+    let hutId = await askQuestion('Enter Hut ID to view (e.g. H-01): ');
     hutId = hutId.trim();
     const bookingHut = huts.find(h => h.hutId === hutId);
     if (!bookingHut) {
