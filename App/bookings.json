@@ -14,5 +14,53 @@
       "gst": 3825,
       "total": 29325
     }
+  },
+  {
+    "bookingId": "B-1002",
+    "hutId": "H-01",
+    "hikerName": "John Smith",
+    "startDate": "2026-06-22",
+    "nights": 5,
+    "partySize": 20,
+    "isMember": true,
+    "cost": {
+      "subtotal": 5000,
+      "discount": 750,
+      "net": 4250,
+      "gst": 637.5,
+      "total": 4887.5
+    }
+  },
+  {
+    "bookingId": "B-1003",
+    "hutId": "H-01",
+    "hikerName": "Jane Doe",
+    "startDate": "2026-06-22",
+    "nights": 5,
+    "partySize": 15,
+    "isMember": true,
+    "cost": {
+      "subtotal": 3750,
+      "discount": 562.5,
+      "net": 3187.5,
+      "gst": 478.13,
+      "total": 3665.63
+    }
+  },
+  {
+    "bookingId": "B-1004",
+    "hutId": "H-01",
+    "hikerName": "Smitty",
+    "startDate": "2026-06-22",
+    "nights": 1,
+    "partySize": 1,
+    "isMember": true,
+    "cost": {
+      "subtotal": 50,
+      "discount": 7.5,
+      "net": 42.5,
+      "gst": 6.38,
+      "total": 48.88
+    }
   }
 ]
